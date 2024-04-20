@@ -26,14 +26,14 @@ static MazeBuilder mb;
 
 void init( i32 width, i32 height ) {
     screen           = { .width = width, .height = height };
-    mb.maze.n_cell_x = 100;
+    mb.maze.n_cell_x = 80;
     mb.maze.n_cell_y = mb.maze.n_cell_x
                        * ( static_cast< f32 >( screen.height )
                            / static_cast< f32 >( screen.width ) );
     mb.maze.resetGrid();
 }
 
-const i32 step_by_sec = 600;
+const i32 step_by_sec = 100;
 
 void render() {
     api::draw_rect( 0, 0, screen.width, screen.height, Rgb( 0, 0, 0 ).n );
