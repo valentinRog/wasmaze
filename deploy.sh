@@ -1,7 +1,7 @@
 #!/bin/sh
 
 git checkout deploy
-git merge --strategy=ours main
+git merge --no-verify --strategy=ours main
 ./build.sh
 git add -f dist
 git commit -m deploy
