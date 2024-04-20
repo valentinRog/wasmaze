@@ -15,12 +15,15 @@ class MazeBuilder {
     std::default_random_engine gen;
 
 public:
-    Maze maze;
+    Maze                maze;
+    std::vector< Vec2 > path;
 
     MazeBuilder() : gen( std::random_device()() ) {
         stack.push( { 0, 0 } );
         visited.insert( stack.top() );
     }
+
+    bool done() const { return stack.empty(); }
 
     void step() {
         if ( stack.size() == 0 ) { return; }

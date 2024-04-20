@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <map>
+#include <optional>
 #include <random>
 #include <set>
 #include <stack>
@@ -33,7 +34,17 @@ void init( i32 width, i32 height ) {
     mb.maze.resetGrid();
 }
 
-const i32 step_by_sec = 100;
+const i32 step_by_sec = 300;
+
+void handle_mouse( i32 x, i32 y ) {
+    if ( !mb.done() ) { return; }
+    const auto cw   = mb.maze.getCellWidth( screen.width );
+    const Vec2 cell = { static_cast< i32 >( static_cast< float >( x ) / cw )
+                            % mb.maze.n_cell_x,
+                        static_cast< i32 >( static_cast< float >( y ) / cw )
+                            % mb.maze.n_cell_y };
+    mb.path         = mb.maze.getShortestPath( { 0, 0 }, cell );
+}
 
 void render() {
     api::draw_rect( 0, 0, screen.width, screen.height, Rgb( 0, 0, 0 ).n );
@@ -53,12 +64,108 @@ void render() {
     if ( pos.has_value() ) {
         api::draw_rect( pos->x * cw, pos->y * cw, cw, cw, Rgb( 200, 0, 0 ).n );
     } else {
-        for ( const auto &p : maze.getShortestPath() ) {
-            api::draw_rect( p.x * cw,
-                            p.y * cw,
-                            std::ceil( cw ),
-                            std::ceil( cw ),
-                            Rgb( 0, 150, 0 ).n );
+        for ( auto i( 0 ); i < mb.path.size(); i++ ) {
+            struct Line {
+                i32 x0;
+                i32 y0;
+                i32 x1;
+                i32 y1;
+            };
+            const auto p     = mb.path[i];
+            const Line north = {
+                .x0 = static_cast< i32 >( static_cast< f32 >( p.x ) * cw
+                                          + cw / 2.f ),
+                .y0 = static_cast< i32 >( static_cast< f32 >( p.y ) * cw ),
+                .x1 = static_cast< i32 >( static_cast< f32 >( p.x ) * cw
+                                          + cw / 2.f ),
+                .y1 = static_cast< i32 >( static_cast< f32 >( p.y ) * cw
+                                          + cw / 2.f ),
+            };
+            const Line south = {
+                .x0 = static_cast< i32 >( static_cast< f32 >( p.x ) * cw
+                                          + cw / 2.f ),
+                .y0 = static_cast< i32 >( static_cast< f32 >( p.y ) * cw
+                                          + cw / 2.f ),
+                .x1 = static_cast< i32 >( static_cast< f32 >( p.x ) * cw
+                                          + cw / 2.f ),
+                .y1 = static_cast< i32 >( static_cast< f32 >( p.y + 1 ) * cw ),
+            };
+            const Line west = {
+                .x0 = static_cast< i32 >( static_cast< f32 >( p.x ) * cw ),
+                .y0 = static_cast< i32 >( static_cast< f32 >( p.y ) * cw
+                                          + cw / 2.f ),
+                .x1 = static_cast< i32 >( static_cast< f32 >( p.x ) * cw
+                                          + cw / 2.f ),
+                .y1 = static_cast< i32 >( static_cast< f32 >( p.y ) * cw
+                                          + cw / 2.f ),
+            };
+            const Line east = {
+                .x0 = static_cast< i32 >( static_cast< f32 >( p.x ) * cw
+                                          + cw / 2.f ),
+                .y0 = static_cast< i32 >( static_cast< f32 >( p.y ) * cw
+                                          + cw / 2.f ),
+                .x1 = static_cast< i32 >( static_cast< f32 >( p.x + 1 ) * cw ),
+                .y1 = static_cast< i32 >( static_cast< f32 >( p.y ) * cw
+                                          + cw / 2.f ),
+            };
+
+            if ( i ) {
+                const auto prev_p = mb.path[i - 1];
+                if ( p.x < prev_p.x ) {
+                    api::draw_line( east.x0,
+                                    east.y0,
+                                    east.x1,
+                                    east.y1,
+                                    Rgb( 0, 200, 0 ).n );
+                } else if ( p.x > prev_p.x ) {
+                    api::draw_line( west.x0,
+                                    west.y0,
+                                    west.x1,
+                                    west.y1,
+                                    Rgb( 0, 200, 0 ).n );
+                } else if ( p.y > prev_p.y ) {
+                    api::draw_line( north.x0,
+                                    north.y0,
+                                    north.x1,
+                                    north.y1,
+                                    Rgb( 0, 200, 0 ).n );
+                } else {
+                    api::draw_line( south.x0,
+                                    south.y0,
+                                    south.x1,
+                                    south.y1,
+                                    Rgb( 0, 200, 0 ).n );
+                }
+            }
+
+            if ( i < mb.path.size() - 1 ) {
+                const auto next_p = mb.path[i + 1];
+                if ( p.x < next_p.x ) {
+                    api::draw_line( east.x0,
+                                    east.y0,
+                                    east.x1,
+                                    east.y1,
+                                    Rgb( 0, 200, 0 ).n );
+                } else if ( p.x > next_p.x ) {
+                    api::draw_line( west.x0,
+                                    west.y0,
+                                    west.x1,
+                                    west.y1,
+                                    Rgb( 0, 200, 0 ).n );
+                } else if ( p.y > next_p.y ) {
+                    api::draw_line( north.x0,
+                                    north.y0,
+                                    north.x1,
+                                    north.y1,
+                                    Rgb( 0, 200, 0 ).n );
+                } else {
+                    api::draw_line( south.x0,
+                                    south.y0,
+                                    south.x1,
+                                    south.y1,
+                                    Rgb( 0, 200, 0 ).n );
+                }
+            }
         }
     }
     for ( i32 y( 0 ); y < maze.n_cell_y; y++ ) {
