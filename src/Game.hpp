@@ -223,6 +223,15 @@ public:
                 }
             }
         }
+        if ( _mb.path.size() ) {
+            const auto p = _mb.path.back();
+            api::draw_rect( 0, 0, cw, cw, Rgb( 200, 0, 0 ).n );
+            api::draw_rect( static_cast< float >( p.x ) * cw,
+                            static_cast< float >( p.y ) * cw,
+                            cw,
+                            cw,
+                            Rgb( 200, 0, 0 ).n );
+        }
     }
 };
 }
