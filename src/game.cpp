@@ -54,7 +54,11 @@ void render() {
         api::draw_rect( pos->x * cw, pos->y * cw, cw, cw, Rgb( 200, 0, 0 ).n );
     } else {
         for ( const auto &p : maze.getShortestPath() ) {
-            api::draw_rect( p.x * cw, p.y * cw, cw, cw, Rgb( 0, 150, 0 ).n );
+            api::draw_rect( p.x * cw,
+                            p.y * cw,
+                            std::ceil( cw ),
+                            std::ceil( cw ),
+                            Rgb( 0, 150, 0 ).n );
         }
     }
     for ( i32 y( 0 ); y < maze.n_cell_y; y++ ) {
