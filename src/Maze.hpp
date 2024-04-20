@@ -1,7 +1,9 @@
 #pragma once
 
+#include <deque>
 #include <map>
 #include <set>
+#include <vector>
 
 #include "Vec2.hpp"
 #include "type.h"
@@ -23,6 +25,33 @@ struct Maze {
     f32 getCellWidth( i32 screen_width ) const {
         return static_cast< f32 >( screen_width )
                / static_cast< f32 >( n_cell_x );
+    }
+
+    std::vector< Vec2 > getShortestPath() const {
+        const Vec2                        pf = { n_cell_x - 1, n_cell_y - 1 };
+        std::deque< std::vector< Vec2 > > q;
+        std::set< Vec2 >                  visited;
+        q.push_back( { { 0, 0 } } );
+        visited.insert( { 0, 0 } );
+
+        while ( true ) {
+            auto path = q.front();
+            q.pop_front();
+            auto p = path.back();
+            for ( const auto np : { Vec2{ p.x + 1, p.y },
+                                    Vec2{ p.x - 1, p.y },
+                                    Vec2{ p.x, p.y + 1 },
+                                    Vec2{ p.x, p.y - 1 } } ) {
+                if ( !conns.count( np ) ) { continue; }
+                if ( visited.count( np ) ) { continue; }
+                if ( !conns.at( p ).count( np ) ) { continue; }
+                visited.insert( np );
+                auto npath( path );
+                npath.push_back( np );
+                q.push_back( npath );
+                if ( np == pf ) { return npath; }
+            }
+        }
     }
 };
 }

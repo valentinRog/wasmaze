@@ -26,14 +26,14 @@ static MazeBuilder mb;
 
 void init( i32 width, i32 height ) {
     screen           = { .width = width, .height = height };
-    mb.maze.n_cell_x = 80;
+    mb.maze.n_cell_x = 100;
     mb.maze.n_cell_y = mb.maze.n_cell_x
                        * ( static_cast< f32 >( screen.height )
                            / static_cast< f32 >( screen.width ) );
     mb.maze.resetGrid();
 }
 
-const i32 step_by_sec = 30;
+const i32 step_by_sec = 600;
 
 void render() {
     api::draw_rect( 0, 0, screen.width, screen.height, Rgb( 0, 0, 0 ).n );
@@ -52,6 +52,10 @@ void render() {
     const auto  pos  = mb.getPos();
     if ( pos.has_value() ) {
         api::draw_rect( pos->x * cw, pos->y * cw, cw, cw, Rgb( 200, 0, 0 ).n );
+    } else {
+        for ( const auto &p : maze.getShortestPath() ) {
+            api::draw_rect( p.x * cw, p.y * cw, cw, cw, Rgb( 0, 150, 0 ).n );
+        }
     }
     for ( i32 y( 0 ); y < maze.n_cell_y; y++ ) {
         for ( i32 x( 0 ); x < maze.n_cell_x; x++ ) {
