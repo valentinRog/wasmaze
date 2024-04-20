@@ -27,12 +27,12 @@ struct Maze {
                / static_cast< f32 >( n_cell_x );
     }
 
-    std::vector< Vec2 > getShortestPath() const {
-        const Vec2                        pf = { n_cell_x - 1, n_cell_y - 1 };
+    std::vector< Vec2 > getShortestPath( const Vec2 &pi,
+                                         const Vec2 &pf ) const {
         std::deque< std::vector< Vec2 > > q;
         std::set< Vec2 >                  visited;
-        q.push_back( { { 0, 0 } } );
-        visited.insert( { 0, 0 } );
+        q.push_back( { pi } );
+        visited.insert( pi );
 
         while ( true ) {
             auto path = q.front();
