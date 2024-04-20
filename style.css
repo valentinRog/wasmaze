@@ -7,7 +7,7 @@
 }
 
 body {
-  background-color: darkgrey;
+  background-color: rgb(15, 0, 70);
 }
 
 div.container {
@@ -15,9 +15,11 @@ div.container {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  min-height: fit-content;
 }
 
 canvas {
   background-color: rgb(255, 255, 255);
   border: 5px solid black;
 }
+  

@@ -1,5 +1,5 @@
 #include "api.h"
-#include "game.h"
+#include "src/game.h"
 #include <emscripten/bind.h>
 
 using namespace emscripten;
