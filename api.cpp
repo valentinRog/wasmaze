@@ -1,5 +1,4 @@
 #include <emscripten.h>
-#include <stdio.h>
 
 namespace api {
 void draw_line(int x0, int y0, int x1, int y1) {
