@@ -3,6 +3,7 @@
 #include <optional>
 #include <random>
 #include <stack>
+#include <array>
 
 #include "Maze.hpp"
 #include "Vec2.hpp"
