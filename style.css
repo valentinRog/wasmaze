@@ -7,19 +7,32 @@
 }
 
 body {
+  font-family: sans-serif;
+  color: white;
   background-color: rgb(15, 0, 70);
+  text-align: center;
 }
 
-div.container {
+div {
+  min-width: fit-content;
+  padding: 0 2rem;
+}
+
+h1 {
+  padding: 2rem;
+  text-align: center;
+}
+
+/* div.container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   min-height: fit-content;
-}
+  min-width: fit-content;
+} */
 
 canvas {
   background-color: rgb(255, 255, 255);
   border: 5px solid darkgrey;
 }
-  
