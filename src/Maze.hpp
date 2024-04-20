@@ -38,6 +38,7 @@ struct Maze {
             auto path = q.front();
             q.pop_front();
             auto p = path.back();
+            if (p == pf) {return path;}
             for ( const auto np : { Vec2{ p.x + 1, p.y },
                                     Vec2{ p.x - 1, p.y },
                                     Vec2{ p.x, p.y + 1 },
@@ -49,7 +50,6 @@ struct Maze {
                 auto npath( path );
                 npath.push_back( np );
                 q.push_back( npath );
-                if ( np == pf ) { return npath; }
             }
         }
     }

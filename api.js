@@ -18,8 +18,9 @@ Module.onRuntimeInitialized = () => {
 
   canvas.addEventListener("mousemove", (e) => {
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
     Module.handle_mouse(x, y);
   });
+  canvas.addEventListener("mouseleave", () => Module.handle_mouse(0, 0));
 };
