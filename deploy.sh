@@ -1,8 +1,8 @@
 #!/bin/sh
 
-git checkout -b deploy
+git checkout deploy
 ./build.sh
 git add dist
 git commit -m deploy
-git push
+git push --set-upstream origin deploy
 git checkout main
