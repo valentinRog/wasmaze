@@ -26,7 +26,7 @@ static MazeBuilder mb;
 
 void init( i32 width, i32 height ) {
     screen           = { .width = width, .height = height };
-    mb.maze.n_cell_x = 80;
+    mb.maze.n_cell_x = 70;
     mb.maze.n_cell_y = mb.maze.n_cell_x
                        * ( static_cast< f32 >( screen.height )
                            / static_cast< f32 >( screen.width ) );
