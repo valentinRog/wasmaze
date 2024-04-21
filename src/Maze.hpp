@@ -29,16 +29,17 @@ struct Maze {
 
     std::vector< Vec2 > getShortestPath( const Vec2 &pi,
                                          const Vec2 &pf ) const {
+        if ( pi == pf ) { return {}; }
         std::deque< std::vector< Vec2 > > q;
         std::set< Vec2 >                  visited;
         q.push_back( { pi } );
         visited.insert( pi );
 
-        while ( true ) {
+        while ( q.size() ) {
             auto path = q.front();
             q.pop_front();
             auto p = path.back();
-            if (p == pf) {return path;}
+            if ( p == pf ) { return path; }
             for ( const auto np : { Vec2{ p.x + 1, p.y },
                                     Vec2{ p.x - 1, p.y },
                                     Vec2{ p.x, p.y + 1 },
@@ -52,6 +53,7 @@ struct Maze {
                 q.push_back( npath );
             }
         }
+        return {};
     }
 };
 }

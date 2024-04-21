@@ -32,7 +32,6 @@ public:
     }
 
     void handle_mouse( i32 x, i32 y ) {
-        if ( !_mb.done() ) { return; }
         const auto cw = _mb.maze.getCellWidth( _screen_w );
         Vec2 cell     = { static_cast< i32 >( static_cast< float >( x ) / cw ),
                           static_cast< i32 >( static_cast< float >( y ) / cw ) };
@@ -67,9 +66,9 @@ public:
                             cw,
                             cw,
                             Rgb( 200, 0, 0 ).n );
-        } else {
-            _render_path();
         }
+        _render_path();
+
         _render_maze();
     }
 
@@ -225,12 +224,12 @@ public:
         }
         if ( _mb.path.size() ) {
             const auto p = _mb.path.back();
-            api::draw_rect( 0, 0, cw, cw, Rgb( 200, 0, 0 ).n );
+            api::draw_rect( 0, 0, cw, cw, Rgb(0, 200, 200 ).n );
             api::draw_rect( static_cast< float >( p.x ) * cw,
                             static_cast< float >( p.y ) * cw,
                             cw,
                             cw,
-                            Rgb( 200, 0, 0 ).n );
+                            Rgb(0, 200, 200 ).n );
         }
     }
 };
